@@ -7,12 +7,24 @@ packageFor:
 }:
 let
   cfg = config.programs.island;
-  seedWallpaper = pkgs.writeShellScript "island-seed-wallpaper" ''
+  settingsFile = "${config.xdg.stateHome}/quickshell/settings.json";
+  declared = pkgs.writeText "island-settings.json" (builtins.toJSON cfg.declaredSettings);
+  applySettings = "${cfg.package}/libexec/island-apply-settings ${declared} ${lib.escapeShellArg settingsFile}";
+  islandctl = "${cfg.package}/bin/islandctl";
+  jq = lib.getExe pkgs.jq;
+  afterStart = pkgs.writeShellScript "island-after-start" ''
     for _ in $(seq 60); do
-      if current=$(${cfg.package}/bin/islandctl wallpaper list 2>/dev/null); then
-        if [ "$(${lib.getExe pkgs.jq} -r '.current // ""' <<<"$current")" = "" ]; then
-          ${cfg.package}/bin/islandctl wallpaper set ${lib.escapeShellArg "${cfg.wallpaper}"}
-        fi
+      if wallpapers=$(${islandctl} wallpaper list 2>/dev/null); then
+        ${lib.optionalString (cfg.wallpaper != null) ''
+          if [ "$(${jq} -r '.current // ""' <<<"$wallpapers")" = "" ]; then
+            ${islandctl} wallpaper set ${lib.escapeShellArg "${cfg.wallpaper}"}
+          fi
+        ''}
+        ${lib.optionalString (cfg.palette != null) ''
+          if [ "$(${islandctl} theme list | ${jq} -r .current)" != ${lib.escapeShellArg cfg.palette} ]; then
+            ${islandctl} theme set ${lib.escapeShellArg cfg.palette}
+          fi
+        ''}
         exit 0
       fi
       sleep 0.5
@@ -20,6 +32,8 @@ let
   '';
 in
 {
+  imports = [ ./settings.nix ];
+
   options.programs.island = {
     enable = lib.mkEnableOption "Island, impasto's Quickshell shell for Hyprland";
     package = lib.mkOption {
@@ -36,7 +50,7 @@ in
     wallpaper = lib.mkOption {
       type = lib.types.nullOr lib.types.path;
       default = null;
-      description = "Wallpaper applied when the shell has none chosen yet.";
+      description = "Wallpaper applied when none has been picked in the shell yet.";
     };
     hyprland = {
       modifier = lib.mkOption {
@@ -101,8 +115,9 @@ in
           PartOf = [ "graphical-session.target" ];
         };
         Service = {
+          ExecStartPre = "-${applySettings}";
           ExecStart = lib.getExe cfg.package;
-          ExecStartPost = lib.mkIf (cfg.wallpaper != null) "-${seedWallpaper}";
+          ExecStartPost = "-${afterStart}";
           Restart = "on-failure";
           RestartSec = 2;
         };

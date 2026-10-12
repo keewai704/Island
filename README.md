@@ -49,6 +49,36 @@ programs.island.enable = true;
 Island replaces other bars, notification daemons, polkit agents and wallpaper
 daemons, so disable those it would compete with.
 
+### Settings
+
+Anything left unset here stays as you change it in the shell's Settings;
+anything set is written over `~/.local/state/quickshell/settings.json` before
+the shell starts, so a Home Manager switch restarts it with the new values.
+
+```nix
+programs.island = {
+  enable = true;
+  wallpaper = ./fuji.jpg;      # shown until another is picked
+  palette = "adaptive";        # or tokyo_night, nord, gruvbox_dark, ...
+  bar = {
+    style = "grouped";         # grouped | spread | island
+    height = 32;
+    chips.shape = "ring";      # ring (iPhone Duo) | icon
+    chips.figure = "hover";    # off | hover | on
+    workspaces = { style = "dots"; count = 5; };
+    left = [ "workspaces" ];
+    right = [ "tray" "notifications" "network" "volume" { id = "stats"; figure = "on"; } ];
+  };
+  clock = { format = "HH:mm"; date = true; seconds = false; };
+  font.family = "Inter";
+  weather.place = "Tokyo";
+  idle = { lock = 0; screen = 10; suspend = 0; };   # minutes, 0 never
+  nightLight = { enable = true; temperature = 4000; };
+  desktop.theme = "modern";    # modern | analogue | sticker
+  settings.notificationTimeout = 8000;   # any other settings.json key
+};
+```
+
 For a Lua Hyprland config, the Home Manager module renders the keybinds and
 window rules as `config.programs.island.hyprland.config`; put that text into
 `hyprland.lua` before your own binds. `hyprland.look` applies impasto's gaps,

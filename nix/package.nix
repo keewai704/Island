@@ -81,6 +81,7 @@ stdenvNoCC.mkDerivation {
   version = "0.1.0-impasto-${lib.substring 0 7 (impasto.rev or "dirty")}";
   src = impasto;
   nativeBuildInputs = [ makeWrapper ];
+  buildInputs = [ python3 ];
   dontBuild = true;
 
   postPatch = ''
@@ -119,6 +120,7 @@ stdenvNoCC.mkDerivation {
     install -m644 home/.local/share/fonts/*.ttf "$out/share/fonts/truetype/"
     install -Dm644 ${./hyprland.lua} "$out/share/island/hyprland.lua"
     install -Dm755 ${../scripts/wallpaper-effect.sh} "$out/libexec/island-wallpaper-effect"
+    install -Dm755 ${../scripts/apply-settings.py} "$out/libexec/island-apply-settings"
 
     makeWrapper ${lib.getExe quickshell} "$out/bin/island" \
       --add-flags "--path $shell" \
