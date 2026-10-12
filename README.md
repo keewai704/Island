@@ -75,6 +75,11 @@ Anything left unset here stays as you change it in the shell's Settings;
 anything set is written over `~/.local/state/quickshell/settings.json` before
 the shell starts, so a Home Manager switch restarts it with the new values.
 
+The Duo chip defaults apply only when no value has been saved. Updating Island
+preserves an existing `chipShape = "icon"` or `chipFigure = "on"`; set
+`bar.chips.shape = "ring"` and `bar.chips.figure = "hover"` in Nix to apply the
+Duo appearance to an existing installation.
+
 ```nix
 programs.island = {
   enable = true;
