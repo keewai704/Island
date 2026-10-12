@@ -2,18 +2,20 @@
 
 A HyprFlux × impasto desktop shell for Hyprland, packaged as a Nix flake.
 
-The shell itself is [impasto](https://github.com/andreumassanet/impasto)
+The shell itself is a [fork of impasto](https://github.com/keewai704/impasto)
 (GPL-3.0): the black island in the bar that becomes the launcher, control
 centre, notifications, games, notes and task board; desktop widgets under the
-windows; and a palette taken from the wallpaper. Island pins it as a flake input
-instead of copying it, and adds only what NixOS needs:
+windows; and a palette taken from the wallpaper. Island pins the fork as a
+flake input. Shell changes live directly in the fork; this repository handles
+NixOS packaging:
 
 - `/usr/share` lookups (Papirus tray icons, emoji data, country codes, xkb
   layouts) point at their nixpkgs store paths.
-- The palette writer leaves configuration files that Home Manager links into
-  the Nix store alone instead of replacing them.
 - Every program the shell calls is on its `PATH`, so nothing has to be
   installed system-wide.
+
+The fork also leaves configuration files that Home Manager links into the Nix
+store alone when writing the palette.
 
 On top of that, the bar is drawn as a row of iPhone Duo status marks: every
 module sits in an open ring with its gap at the bottom, and a white arc fills
@@ -22,6 +24,8 @@ media). This is the default chip shape; Settings can still switch back to
 impasto's icons. The dock along the bottom edge is left out; its pins still
 order the launcher. Two upstream issues are fixed on the way: lists exposed over
 IPC, and tray icons probed in the Papirus panel set when it has no such icon.
+These changes are maintained in the fork rather than applied as build-time
+patches.
 
 Brightness goes through [hypr-brightness](https://github.com/keewai704/hypr-brightness)
 instead of brightnessctl and ddcutil. The shell keeps one connection to its

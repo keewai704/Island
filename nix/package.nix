@@ -82,12 +82,6 @@ stdenvNoCC.mkDerivation {
 
   postPatch = ''
     shell=home/.config/quickshell
-    patch -p1 -d "$shell" < ${../patches/nix-managed-targets.patch}
-    patch -p1 -d "$shell" < ${../patches/upstream-fixes.patch}
-    patch -p1 -d "$shell" < ${../patches/duo-status-marks.patch}
-    patch -p1 -d "$shell" < ${../patches/clock-style.patch}
-    patch -p1 -d "$shell" < ${../patches/no-dock.patch}
-    cp ${../shell/BrightnessService.qml} "$shell/services/BrightnessService.qml"
     substituteInPlace "$shell/components/TrayIcon.qml" \
       --replace-fail /usr/share/icons/Papirus-Dark ${papirus-icon-theme}/share/icons/Papirus-Dark
     {

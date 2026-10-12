@@ -3,15 +3,15 @@
     "impasto": {
       "flake": false,
       "locked": {
-        "lastModified": 1791301394,
-        "narHash": "sha256-QF/IFVyRfYQ45wtAFDGm7inc3mRU2n0ed/EzvEap040=",
-        "owner": "andreumassanet",
+        "lastModified": 1791802564,
+        "narHash": "sha256-al87NBGNpisy7w4C/r/QjWaxxONGnJ1b7ZYxduRctss=",
+        "owner": "keewai704",
         "repo": "impasto",
-        "rev": "6d759aa3fe16e3b40641beeb9b24e3c4afcfeefe",
+        "rev": "7e5a0e225f943baf25316983a38be4fa53d3996f",
         "type": "github"
       },
       "original": {
-        "owner": "andreumassanet",
+        "owner": "keewai704",
         "repo": "impasto",
         "type": "github"
       }
