@@ -3,11 +3,11 @@
     "impasto": {
       "flake": false,
       "locked": {
-        "lastModified": 1791802742,
-        "narHash": "sha256-79ZCSmCB7Iz7TYqr9YXfzPIj++aY+qyqSrqjioY53Zg=",
+        "lastModified": 1791803829,
+        "narHash": "sha256-ySVXBCiYU+zKQMSB/mYKXJinP87vDrmRV3O7jpGmXLI=",
         "owner": "keewai704",
         "repo": "impasto",
-        "rev": "4db211e76db680e966fb3b2b06082d1c3b4c602e",
+        "rev": "f73256311ee88f1c490d474098d5851183372bac",
         "type": "github"
       },
       "original": {
