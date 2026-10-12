@@ -1,0 +1,44 @@
+{
+  "nodes": {
+    "impasto": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791301394,
+        "narHash": "sha256-QF/IFVyRfYQ45wtAFDGm7inc3mRU2n0ed/EzvEap040=",
+        "owner": "andreumassanet",
+        "repo": "impasto",
+        "rev": "6d759aa3fe16e3b40641beeb9b24e3c4afcfeefe",
+        "type": "github"
+      },
+      "original": {
+        "owner": "andreumassanet",
+        "repo": "impasto",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1791594108,
+        "narHash": "sha256-XK4KceonkwD8LuMAt/vNrz982mXJM5jeHAxMwsUXXAQ=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "6510408d147d8c5e6d76043e899e9251756f6a75",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "impasto": "impasto",
+        "nixpkgs": "nixpkgs"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
