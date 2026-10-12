@@ -51,6 +51,10 @@
               }
               ''
                 shell=${island}/share/quickshell/island
+                if rg -n '\b(PetService|GamesService|PetFace|PetFamily|PetShelf|PetPanel|GamesPanel|PetModule|GamesModule|PetBlock|GamesBlock|GameBoard)\b|"(pet|games)"' "$shell"; then
+                  echo "removed games or pets remain in the shell"
+                  exit 1
+                fi
                 ! rg -n '/usr/share/(icons|unicode|iso-codes|X11)' "$shell"
                 for path in $(rg -oN --no-filename '/nix/store/[a-z0-9]{32}-(papirus|unicode-emoji|cldr|iso-codes|xkeyboard)[^"` ]*' "$shell" | sed 's/\$.*//; s|/$||' | sort -u); do
                   test -e "$path" || { echo "missing $path"; exit 1; }
