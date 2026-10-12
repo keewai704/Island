@@ -104,10 +104,16 @@ programs.island = {
 
 For a Lua Hyprland config, the Home Manager module renders the keybinds and
 window rules as `config.programs.island.hyprland.config`; put that text into
-`hyprland.lua` before your own binds. `hyprland.look` applies impasto's gaps,
-rounding and blur, `hyprland.binds = false` keeps only the rules, and
-`hyprland.lockKey` binds a lock key. `programs.island.wallpaper` is shown until
-another wallpaper is picked.
+`hyprland.lua` before your own binds. It also defines
+`island_bind(keys, dispatcher, description, flags)` for your compositor binds.
+Use it instead of `hl.bind` so Settings → Keys and profile changes apply to
+those binds too. Every description must be unique and match the shell's
+catalogue for shell shortcuts. The active profile's `keys.tsv` overrides the
+default combinations, including empty combinations for unbound actions.
+`hyprland.look` applies impasto's gaps, rounding and blur,
+`hyprland.binds = false` keeps only the rules and the binding helper, and
+`hyprland.lockKey` defaults to `SUPER + ALT + L` (`null` disables its default
+binding). `programs.island.wallpaper` is shown until another wallpaper is picked.
 
 | Key | |
 | --- | --- |
@@ -116,12 +122,13 @@ another wallpaper is picked.
 | `SUPER + SHIFT + W` | Wallpaper effects in the island (Left/Right to select, Enter to apply) |
 | `SUPER + SHIFT + T` | Palette |
 | `SUPER + I` | Control centre and notifications |
-| `SUPER + D` | Workspace overview |
+| `SUPER + Tab` | Workspace overview |
 | `SUPER + V` | Clipboard |
 | `SUPER + S` / `B` / `U` | Notes / task board / statistics |
 | `SUPER + CTRL + B` / `W` | Hide the bar / the desktop widgets |
-| `SUPER + ALT + C` | Session menu |
-| `SUPER + F1` | Every key |
+| `SUPER + X` | Session menu |
+| `SUPER + ALT + L` | Lock the screen |
+| `SUPER + /` | Every key |
 | `Print`, `SHIFT + Print`, `CTRL + Print` | Capture surface, screen, window |
 
 `islandctl <target> <function> [args]` calls the shell's IPC, for example

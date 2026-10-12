@@ -66,15 +66,15 @@ in
       look = lib.mkEnableOption "impasto's gaps, rounding and blur";
       lockKey = lib.mkOption {
         type = lib.types.nullOr lib.types.str;
-        default = null;
+        default = "${cfg.hyprland.modifier} + ALT + L";
         example = "SUPER + ALT + L";
-        description = "Key that locks the screen; null leaves locking to the session menu.";
+        description = "Default key that locks the screen; null leaves locking to the session menu.";
       };
       config = lib.mkOption {
         type = lib.types.lines;
         readOnly = true;
         default = lib.optionalString cfg.enable ''
-          dofile("${cfg.package}/share/island/hyprland.lua")(${
+          local island_bind = dofile("${cfg.package}/share/island/hyprland.lua")(${
             lib.generators.toLua { } (
               {
                 inherit (cfg.hyprland) modifier binds look;

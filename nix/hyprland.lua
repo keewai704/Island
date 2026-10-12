@@ -1,10 +1,28 @@
 return function(options)
     local main_mod = options.modifier or "SUPER"
+    local profile_keys = {}
+    local state = os.getenv("XDG_STATE_HOME") or (os.getenv("HOME") .. "/.local/state")
+    local file = io.open(state .. "/quickshell/keys.tsv", "r")
+    if file then
+        for line in file:lines() do
+            local description, combination = line:match("^([^#\t][^\t]*)\t(.*)$")
+            if description then
+                profile_keys[description] = combination
+            end
+        end
+        file:close()
+    end
 
     local function bind(keys, dispatcher, description, flags)
         flags = flags or {}
         flags.description = description
-        hl.bind(keys, dispatcher, flags)
+        local chosen = profile_keys[description]
+        if chosen == nil then
+            chosen = keys
+        end
+        if chosen ~= "" then
+            hl.bind(chosen, dispatcher, flags)
+        end
     end
 
     local function shell(name)
@@ -59,38 +77,39 @@ return function(options)
     end
 
     if options.binds == false then
-        return
+        return bind
     end
 
-    bind(main_mod .. " + Space", shell("launcher"), "Island · Open the launcher")
-    bind(main_mod .. " + SHIFT + Space", shell("appearance"), "Island · Open the wallpapers")
+    bind(main_mod .. " + Space", shell("launcher"), "Shell · Open the launcher")
+    bind(main_mod .. " + SHIFT + Space", shell("appearance"), "Shell · Open appearance")
     bind(main_mod .. " + SHIFT + W", shell("effects"), "Island · Open the wallpaper effects")
-    bind(main_mod .. " + I", shell("controls"), "Island · Open the control centre")
-    bind(main_mod .. " + D", shell("overview"), "Island · Open the workspace overview")
-    bind(main_mod .. " + V", shell("clipboard"), "Island · Open the clipboard history")
-    bind(main_mod .. " + ALT + C", shell("session"), "Island · Session menu")
-    bind(main_mod .. " + F1", shell("keys"), "Island · Show every key")
-    bind(main_mod .. " + comma", shell("settings"), "Island · Open settings")
-    bind(main_mod .. " + period", shell("emoji"), "Island · Pick an emoji")
-    bind(main_mod .. " + SHIFT + T", shell("palette"), "Island · Open the palette")
-    bind(main_mod .. " + U", shell("stats"), "Island · Open system statistics")
-    bind(main_mod .. " + S", shell("notes"), "Island · Open the notes")
-    bind(main_mod .. " + B", shell("board"), "Island · Open the task board")
-    bind(main_mod .. " + SHIFT + C", shell("picker"), "Island · Pick a colour off the screen")
-    bind(main_mod .. " + CTRL + B", shell("zen"), "Island · Hide or show the bar")
-    bind(main_mod .. " + CTRL + W", shell("widgets"), "Island · Hide or show the desktop widgets")
-    bind("Print", shell("capture"), "Island · Open the capture surface")
-    bind("SHIFT + Print", shell("captureScreen"), "Island · Capture the whole screen")
-    bind("CTRL + Print", shell("captureWindow"), "Island · Capture a window")
-    bind(main_mod .. " + SHIFT + R", shell("record"), "Island · Start or stop recording")
+    bind(main_mod .. " + I", shell("controls"), "Shell · Open the control centre")
+    bind(main_mod .. " + Tab", shell("overview"), "Shell · Open the workspace overview")
+    bind(main_mod .. " + V", shell("clipboard"), "Shell · Open the clipboard history")
+    bind(main_mod .. " + X", shell("session"), "Session · Session menu")
+    bind(main_mod .. " + slash", shell("keys"), "Shell · Show every key")
+    bind(main_mod .. " + comma", shell("settings"), "Shell · Open settings")
+    bind(main_mod .. " + period", shell("emoji"), "Shell · Pick an emoji")
+    bind(main_mod .. " + SHIFT + T", shell("palette"), "Shell · Open the palette")
+    bind(main_mod .. " + U", shell("stats"), "Shell · Open system statistics")
+    bind(main_mod .. " + S", shell("notes"), "Shell · Open the notes")
+    bind(main_mod .. " + B", shell("board"), "Shell · Open the task board")
+    bind(main_mod .. " + SHIFT + C", shell("picker"), "Shell · Pick a colour off the screen")
+    bind(main_mod .. " + CTRL + B", shell("zen"), "Shell · Hide or show the bar")
+    bind(main_mod .. " + CTRL + W", shell("widgets"), "Shell · Hide or show the desktop widgets")
+    bind("Print", shell("capture"), "Shell · Open the capture surface")
+    bind("SHIFT + Print", shell("captureScreen"), "Shell · Capture the whole screen")
+    bind("CTRL + Print", shell("captureWindow"), "Shell · Capture a window")
+    bind(main_mod .. " + SHIFT + R", shell("record"), "Shell · Start or stop recording the screen")
     if options.lockKey then
-        bind(options.lockKey, shell("lock"), "Island · Lock the screen")
+        bind(options.lockKey, shell("lock"), "Session · Lock the screen")
     end
-    bind("XF86MonBrightnessUp", shell("brightnessUp"), "Island · Brightness up", { locked = true, repeating = true })
+    bind("XF86MonBrightnessUp", shell("brightnessUp"), "Media · Brightness up", { locked = true, repeating = true })
     bind(
         "XF86MonBrightnessDown",
         shell("brightnessDown"),
-        "Island · Brightness down",
+        "Media · Brightness down",
         { locked = true, repeating = true }
     )
+    return bind
 end
