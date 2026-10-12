@@ -1,0 +1,90 @@
+diff --git a/bar/modules/ClockModule.qml b/bar/modules/ClockModule.qml
+--- a/bar/modules/ClockModule.qml
++++ b/bar/modules/ClockModule.qml
+@@ -18,7 +18,7 @@
+ Item {
+     id: root
+ 
+-    implicitWidth: holder.implicitWidth
++    implicitWidth: ModuleService.clockCore
+     implicitHeight: Theme.capsuleHeight
+ 
+     // Tick every second only when seconds are shown.
+@@ -52,8 +52,9 @@
+                     anchors.verticalCenter: parent.verticalCenter
+                     text: Qt.formatDateTime(clock.date, root.format)
+                     font.family: Theme.fontFamily
+-                    font.pixelSize: Theme.fontSizeRegular
++                    font.pixelSize: Theme.fontSizeSmall
+                     font.weight: Font.DemiBold
++                    font.features: { "tnum": 1 }
+                     color: Theme.text
+                 }
+ 
+diff --git a/bar/widgets/DynamicIsland.qml b/bar/widgets/DynamicIsland.qml
+--- a/bar/widgets/DynamicIsland.qml
++++ b/bar/widgets/DynamicIsland.qml
+@@ -52,14 +52,15 @@
+     // own controls; and not while `landing` from one.
+     readonly property bool lit: hover.hovered && !root.landing
+         && islandState.layer === islandState.layerModules && !root.hosted
+-    // Solid, a floating island at rest is a shade off the black; on glass it
+-    // is the capsules' ground, since a lighter veil reads as another material.
++    // At rest, use the same ground as the bar's other capsules. Expanded
++    // panels keep their raised surface on solid backgrounds.
+     readonly property color surfaceColor: {
+         if (!Theme.solid)
+             return root.lit ? Theme.islandGroundLit : Theme.islandGround
+         if (root.lit)
+             return Theme.islandSurfaceHover
+-        return SettingsService.islandAttached ? Theme.islandGround : Theme.islandSurface
++        return SettingsService.islandAttached || islandState.layer === islandState.layerModules
++            ? Theme.islandGround : Theme.islandSurface
+     }
+ 
+     // ── HOSTED ──────────────────────────────────────────────────────────────
+diff --git a/services/ModuleService.qml b/services/ModuleService.qml
+--- a/services/ModuleService.qml
++++ b/services/ModuleService.qml
+@@ -62,7 +62,7 @@
+         { id: "spectrum",      name: "Spectrum",      bar: false, width: 0,   height: 0 },
+         { id: "lyrics",        name: "Lyrics",        bar: false, width: 0,   height: 0 },
+         { id: "clock",         name: "Clock",         bar: false,
+-          width: SettingsService.clockShowsDate ? 240 : 150, height: Theme.capsuleHeight }
++          width: root.clockCore, height: Theme.capsuleHeight }
+     ]
+ 
+     function entry(id: string): var {
+@@ -361,11 +361,28 @@
+     readonly property int overflow: Math.max(0, root.running.length - 2)
+     readonly property int overflowWidth: 30
+ 
+-    // Resting width. Alone, the time keeps the catalogue width; with
+-    // activities it shrinks to fit and each side gets a slot. One activity
++    // Resting width. The clock fits its text with the same padding as a
++    // standalone bar chip; each activity side gets a slot. One activity
+     // splits across both sides (mark left, figure right); two take one each.
+-    readonly property int clockCore: SettingsService.clockShowsDate
+-        ? 150 : (SettingsService.clockShowsSeconds ? 88 : 72)
++    readonly property string clockFormat: SettingsService.clockShowsSeconds
++        ? SettingsService.clockFormat.replace("mm", "mm:ss") : SettingsService.clockFormat
++    readonly property int clockCore: 22 + Math.ceil(root.clockMetrics.advanceWidth)
++        + (SettingsService.clockShowsDate
++            ? 8 + Math.ceil(root.clockDateMetrics.advanceWidth) : 0)
++
++    readonly property TextMetrics clockMetrics: TextMetrics {
++        font.family: Theme.fontFamily
++        font.pixelSize: Theme.fontSizeSmall
++        font.weight: Font.DemiBold
++        font.features: { "tnum": 1 }
++        text: Qt.formatTime(root.today.date, root.clockFormat)
++    }
++
++    readonly property TextMetrics clockDateMetrics: TextMetrics {
++        font.family: Theme.fontFamily
++        font.pixelSize: Theme.fontSizeSmall
++        text: Qt.formatDate(root.today.date, "ddd d MMM")
++    }
+     readonly property int activitySide: {
+         if (root.activities.length > 1)
+             return 92
