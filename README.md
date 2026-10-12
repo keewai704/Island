@@ -41,20 +41,27 @@ programs.island.enable = true;
 Island replaces other bars, notification daemons, polkit agents and wallpaper
 daemons, so disable those it would compete with.
 
-Keybinds and window rules for a Lua Hyprland config:
+For a Lua Hyprland config, the Home Manager module renders the keybinds and
+window rules as `config.programs.island.hyprland.config`; put that text into
+`hyprland.lua` before your own binds. `hyprland.look` applies impasto's gaps,
+rounding and blur, `hyprland.binds = false` keeps only the rules, and
+`hyprland.lockKey` binds a lock key. `programs.island.wallpaper` is shown until
+another wallpaper is picked.
 
-```lua
-dofile(island_package .. "/share/island/hyprland.lua")({
-    package = island_package,
-    modifier = "SUPER",
-    look = true,
-})
-```
-
-`look` applies impasto's gaps, rounding and blur; `binds = false` keeps only the
-rules. `SUPER + Space` opens the launcher, `SUPER + A` the control centre,
-`SUPER + T` the wallpapers, `SUPER + SHIFT + W` the wallpaper effects and
-`SUPER + H` lists every key.
+| Key | |
+| --- | --- |
+| `SUPER + Space` | Launcher (`=` sums, `@` windows, `'` clipboard, `:` emoji, `>` shell) |
+| `SUPER + SHIFT + Space` | Wallpapers |
+| `SUPER + SHIFT + W` | Wallpaper effects |
+| `SUPER + SHIFT + T` | Palette |
+| `SUPER + I` | Control centre and notifications |
+| `SUPER + D` | Workspace overview |
+| `SUPER + V` | Clipboard |
+| `SUPER + G` / `S` / `B` / `U` | Games / notes / task board / statistics |
+| `SUPER + CTRL + B` / `W` | Hide the bar / the desktop widgets |
+| `SUPER + ALT + C` | Session menu |
+| `SUPER + F1` | Every key |
+| `Print`, `SHIFT + Print`, `CTRL + Print` | Capture surface, screen, window |
 
 `islandctl <target> <function> [args]` calls the shell's IPC, for example
 `islandctl wallpaper set ~/Pictures/fuji.jpg`.
@@ -64,7 +71,7 @@ rules. `SUPER + Space` opens the launcher, `SUPER + A` the control centre,
 | Output | |
 | --- | --- |
 | `packages.<system>.island` | `island`, `islandctl`, `island-wallpaper-effect` |
-| `homeManagerModules.default` | `programs.island.{enable,package,wallpapers}` |
+| `homeManagerModules.default` | `programs.island.{enable,package,wallpapers,wallpaper,hyprland}` |
 | `nixosModules.default` | `programs.island.enable` |
 
 ## License
