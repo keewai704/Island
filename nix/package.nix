@@ -88,6 +88,7 @@ stdenvNoCC.mkDerivation {
     patch -p1 -d "$shell" < ${../patches/nix-managed-targets.patch}
     patch -p1 -d "$shell" < ${../patches/upstream-fixes.patch}
     patch -p1 -d "$shell" < ${../patches/duo-status-marks.patch}
+    patch -p1 -d "$shell" < ${../patches/no-dock.patch}
     substituteInPlace "$shell/components/TrayIcon.qml" \
       --replace-fail /usr/share/icons/Papirus-Dark ${papirus-icon-theme}/share/icons/Papirus-Dark
     {

@@ -19,7 +19,8 @@ On top of that, the bar is drawn as a row of iPhone Duo status marks: every
 module sits in an open ring with its gap at the bottom, and a white arc fills
 it only where there is an amount to show (volume, brightness, processor,
 media). This is the default chip shape; Settings can still switch back to
-impasto's icons. Two upstream issues are fixed on the way: lists exposed over
+impasto's icons. The dock along the bottom edge is left out; its pins still
+order the launcher. Two upstream issues are fixed on the way: lists exposed over
 IPC, and tray icons probed in the Papirus panel set when it has no such icon.
 
 From [HyprFlux](https://github.com/ahmad9059/HyprFlux) (MIT) comes the
