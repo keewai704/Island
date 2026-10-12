@@ -7,11 +7,9 @@
   python3,
   awww,
   bluez,
-  brightnessctl,
   cava,
   cldr-annotations,
   dbus,
-  ddcutil,
   fontconfig,
   grim,
   gtk3,
@@ -47,10 +45,8 @@ let
     python3
     awww
     bluez
-    brightnessctl
     cava
     dbus
-    ddcutil
     fontconfig
     grim
     gtk3
@@ -90,6 +86,7 @@ stdenvNoCC.mkDerivation {
     patch -p1 -d "$shell" < ${../patches/upstream-fixes.patch}
     patch -p1 -d "$shell" < ${../patches/duo-status-marks.patch}
     patch -p1 -d "$shell" < ${../patches/no-dock.patch}
+    cp ${../shell/BrightnessService.qml} "$shell/services/BrightnessService.qml"
     substituteInPlace "$shell/components/TrayIcon.qml" \
       --replace-fail /usr/share/icons/Papirus-Dark ${papirus-icon-theme}/share/icons/Papirus-Dark
     {

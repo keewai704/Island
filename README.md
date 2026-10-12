@@ -23,6 +23,12 @@ impasto's icons. The dock along the bottom edge is left out; its pins still
 order the launcher. Two upstream issues are fixed on the way: lists exposed over
 IPC, and tray icons probed in the Papirus panel set when it has no such icon.
 
+Brightness goes through [hypr-brightness](https://github.com/keewai704/hypr-brightness)
+instead of brightnessctl and ddcutil. The shell keeps one connection to its
+socket: the brightness keys, the control centre slider and `islandctl brightness`
+send levels there, and levels set elsewhere (the `hypr-brightness` CLI, for one)
+come back as events and show the OSD.
+
 From [HyprFlux](https://github.com/ahmad9059/HyprFlux) (MIT) comes the
 ImageMagick wallpaper effects menu (`island-wallpaper-effect`), applied through
 the shell so the palette follows the processed picture.
@@ -44,6 +50,20 @@ programs.island.enable = true;
 # Home Manager: the shell and awww as user services, fonts, impasto's paintings
 imports = [ inputs.island.homeManagerModules.default ];
 programs.island.enable = true;
+```
+
+```nix
+# hypr-brightness, which Island talks to but does not import
+inputs.hypr-brightness = {
+  url = "git+https://github.com/keewai704/hypr-brightness.git?ref=main";
+  inputs.nixpkgs.follows = "nixpkgs";
+};
+# NixOS: I2C access for monitors
+imports = [ inputs.hypr-brightness.nixosModules.default ];
+services.hypr-brightness.enable = true;
+# Home Manager: the daemon and its socket
+imports = [ inputs.hypr-brightness.homeManagerModules.default ];
+services.hypr-brightness.enable = true;
 ```
 
 Island replaces other bars, notification daemons, polkit agents and wallpaper

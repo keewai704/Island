@@ -97,6 +97,12 @@ in
       pkgs.papirus-icon-theme
     ];
     fonts.fontconfig.enable = true;
+    warnings =
+      lib.optional (!(lib.attrByPath [ "services" "hypr-brightness" "enable" ] false config))
+        ''
+          Island sets brightness through hypr-brightness; import
+          inputs.hypr-brightness.homeManagerModules.default and enable services.hypr-brightness.
+        '';
 
     xdg.dataFile."wallpapers" = lib.mkIf cfg.wallpapers {
       source = "${cfg.package}/share/island/wallpapers";
