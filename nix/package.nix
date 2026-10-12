@@ -18,7 +18,6 @@
   hyprsunset,
   imagemagick,
   isocodes,
-  jq,
   libnotify,
   mpvpaper,
   networkmanager,
@@ -26,7 +25,6 @@
   playerctl,
   power-profiles-daemon,
   pulseaudio,
-  rofi,
   satty,
   slurp,
   systemd,
@@ -124,14 +122,7 @@ stdenvNoCC.mkDerivation {
     makeWrapper ${lib.getExe quickshell} "$out/bin/islandctl" \
       --add-flags "--path $shell ipc call"
     makeWrapper "$out/libexec/island-wallpaper-effect" "$out/bin/island-wallpaper-effect" \
-      --prefix PATH : ${
-        lib.makeBinPath [
-          imagemagick
-          jq
-          libnotify
-          rofi
-        ]
-      }:"$out/bin"
+      --prefix PATH : "$out/bin"
     runHook postInstall
   '';
 

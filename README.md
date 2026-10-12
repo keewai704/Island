@@ -30,8 +30,10 @@ send levels there, and levels set elsewhere (the `hypr-brightness` CLI, for one)
 come back as events and show the OSD.
 
 From [HyprFlux](https://github.com/ahmad9059/HyprFlux) (MIT) comes the
-ImageMagick wallpaper effects menu (`island-wallpaper-effect`), applied through
-the shell so the palette follows the processed picture.
+ImageMagick wallpaper effects, selected in the island's appearance panel
+(`island-wallpaper-effect` opens it too). Effects are applied to the original
+picture, and No Effects restores it, so switching effects does not stack them.
+The palette follows the processed picture.
 
 ## Use
 
@@ -110,7 +112,7 @@ another wallpaper is picked.
 | --- | --- |
 | `SUPER + Space` | Launcher (`=` sums, `@` windows, `'` clipboard, `:` emoji, `>` shell) |
 | `SUPER + SHIFT + Space` | Wallpapers |
-| `SUPER + SHIFT + W` | Wallpaper effects |
+| `SUPER + SHIFT + W` | Wallpaper effects in the island (Left/Right to select, Enter to apply) |
 | `SUPER + SHIFT + T` | Palette |
 | `SUPER + I` | Control centre and notifications |
 | `SUPER + D` | Workspace overview |
@@ -123,6 +125,9 @@ another wallpaper is picked.
 
 `islandctl <target> <function> [args]` calls the shell's IPC, for example
 `islandctl wallpaper set ~/Pictures/fuji.jpg`.
+`islandctl wallpaper effects` lists the effects and the active one;
+`islandctl wallpaper effect sepia-tone` applies one, and `none` restores the
+original. Image processing runs in the background while the island stays usable.
 
 ## Packages
 

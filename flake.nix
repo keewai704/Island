@@ -4,7 +4,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     impasto = {
-      url = "github:keewai704/impasto";
+      url = "github:keewai704/impasto/main";
       flake = false;
     };
   };

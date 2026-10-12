@@ -1,6 +1,5 @@
 return function(options)
     local main_mod = options.modifier or "SUPER"
-    local package = options.package
 
     local function bind(keys, dispatcher, description, flags)
         flags = flags or {}
@@ -65,6 +64,7 @@ return function(options)
 
     bind(main_mod .. " + Space", shell("launcher"), "Island · Open the launcher")
     bind(main_mod .. " + SHIFT + Space", shell("appearance"), "Island · Open the wallpapers")
+    bind(main_mod .. " + SHIFT + W", shell("effects"), "Island · Open the wallpaper effects")
     bind(main_mod .. " + I", shell("controls"), "Island · Open the control centre")
     bind(main_mod .. " + D", shell("overview"), "Island · Open the workspace overview")
     bind(main_mod .. " + V", shell("clipboard"), "Island · Open the clipboard history")
@@ -84,11 +84,6 @@ return function(options)
     bind("SHIFT + Print", shell("captureScreen"), "Island · Capture the whole screen")
     bind("CTRL + Print", shell("captureWindow"), "Island · Capture a window")
     bind(main_mod .. " + SHIFT + R", shell("record"), "Island · Start or stop recording")
-    bind(
-        main_mod .. " + SHIFT + W",
-        hl.dsp.exec_cmd(package .. "/bin/island-wallpaper-effect"),
-        "Island · Apply a wallpaper effect"
-    )
     if options.lockKey then
         bind(options.lockKey, shell("lock"), "Island · Lock the screen")
     end

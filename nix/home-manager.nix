@@ -78,7 +78,6 @@ in
             lib.generators.toLua { } (
               {
                 inherit (cfg.hyprland) modifier binds look;
-                package = toString cfg.package;
               }
               // lib.optionalAttrs (cfg.hyprland.lockKey != null) { inherit (cfg.hyprland) lockKey; }
             )
