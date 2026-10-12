@@ -124,7 +124,8 @@ stdenvNoCC.mkDerivation {
       --add-flags "--path $shell" \
       --prefix PATH : ${lib.makeBinPath runtime} \
       --set-default QS_ICON_THEME Papirus-Dark \
-      --suffix XDG_DATA_DIRS : ${papirus-icon-theme}/share
+      --suffix XDG_DATA_DIRS : ${papirus-icon-theme}/share \
+      --run 'if [ -z "''${TZDIR-}" ] && [ -d /etc/zoneinfo ]; then export TZDIR=/etc/zoneinfo; fi'
     makeWrapper ${lib.getExe quickshell} "$out/bin/islandctl" \
       --add-flags "--path $shell ipc call"
     makeWrapper "$out/libexec/island-wallpaper-effect" "$out/bin/island-wallpaper-effect" \
