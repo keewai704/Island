@@ -4,7 +4,7 @@ A HyprFlux × impasto desktop shell for Hyprland, packaged as a Nix flake.
 
 The shell itself is a [fork of impasto](https://github.com/keewai704/impasto)
 (GPL-3.0): the black island in the bar that becomes the launcher, control
-centre, notifications, games, notes and task board; desktop widgets under the
+centre, notifications, notes and task board; desktop widgets under the
 windows; and a palette taken from the wallpaper. Island pins the fork as a
 flake input. Shell changes live directly in the fork; this repository handles
 NixOS packaging:
@@ -18,6 +18,7 @@ The fork also leaves configuration files that Home Manager links into the Nix
 store alone when writing the palette.
 
 The dock along the bottom edge is left out; its pins still order the launcher.
+The built-in games and pets are removed from the fork.
 Two upstream issues are fixed on the way: lists exposed over
 IPC, and tray icons probed in the Papirus panel set when it has no such icon.
 These changes are maintained in the fork rather than applied as build-time
@@ -115,7 +116,7 @@ another wallpaper is picked.
 | `SUPER + I` | Control centre and notifications |
 | `SUPER + D` | Workspace overview |
 | `SUPER + V` | Clipboard |
-| `SUPER + G` / `S` / `B` / `U` | Games / notes / task board / statistics |
+| `SUPER + S` / `B` / `U` | Notes / task board / statistics |
 | `SUPER + CTRL + B` / `W` | Hide the bar / the desktop widgets |
 | `SUPER + ALT + C` | Session menu |
 | `SUPER + F1` | Every key |
