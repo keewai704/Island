@@ -86,8 +86,19 @@ stdenvNoCC.mkDerivation {
   postPatch = ''
     shell=home/.config/quickshell
     patch -p1 -d "$shell" < ${../patches/nix-managed-targets.patch}
+    patch -p1 -d "$shell" < ${../patches/upstream-fixes.patch}
+    patch -p1 -d "$shell" < ${../patches/duo-status-marks.patch}
     substituteInPlace "$shell/components/TrayIcon.qml" \
       --replace-fail /usr/share/icons/Papirus-Dark ${papirus-icon-theme}/share/icons/Papirus-Dark
+    {
+      echo ".pragma library"
+      echo "var names = {"
+      for icon in ${papirus-icon-theme}/share/icons/Papirus-Dark/22x22/panel/*.svg; do
+        name=''${icon##*/}
+        echo "  \"''${name%.svg}\": true,"
+      done
+      echo "}"
+    } > "$shell/components/panel-icons.js"
     substituteInPlace "$shell/scripts/emoji.py" \
       --replace-fail /usr/share/unicode/emoji ${unicode-emoji}/share/unicode/emoji \
       --replace-fail /usr/share/unicode/cldr ${cldr-annotations}/share/unicode/cldr \
@@ -110,7 +121,9 @@ stdenvNoCC.mkDerivation {
 
     makeWrapper ${lib.getExe quickshell} "$out/bin/island" \
       --add-flags "--path $shell" \
-      --prefix PATH : ${lib.makeBinPath runtime}
+      --prefix PATH : ${lib.makeBinPath runtime} \
+      --set-default QS_ICON_THEME Papirus-Dark \
+      --suffix XDG_DATA_DIRS : ${papirus-icon-theme}/share
     makeWrapper ${lib.getExe quickshell} "$out/bin/islandctl" \
       --add-flags "--path $shell ipc call"
     makeWrapper "$out/libexec/island-wallpaper-effect" "$out/bin/island-wallpaper-effect" \

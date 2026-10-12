@@ -15,6 +15,13 @@ instead of copying it, and adds only what NixOS needs:
 - Every program the shell calls is on its `PATH`, so nothing has to be
   installed system-wide.
 
+On top of that, the bar is drawn as a row of iPhone Duo status marks: every
+module sits in an open ring with its gap at the bottom, and a white arc fills
+it only where there is an amount to show (volume, brightness, processor,
+media). This is the default chip shape; Settings can still switch back to
+impasto's icons. Two upstream issues are fixed on the way: lists exposed over
+IPC, and tray icons probed in the Papirus panel set when it has no such icon.
+
 From [HyprFlux](https://github.com/ahmad9059/HyprFlux) (MIT) comes the
 ImageMagick wallpaper effects menu (`island-wallpaper-effect`), applied through
 the shell so the palette follows the processed picture.
