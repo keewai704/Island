@@ -74,7 +74,7 @@ in
         shape = setting (types.enum [
           "ring"
           "icon"
-        ]) "iPhone Duo style rings, or impasto's plain symbols.";
+        ]) "Gauge rings for modules with a reading, or plain symbols.";
         figure = setting (types.enum [
           "off"
           "hover"

@@ -17,12 +17,8 @@ NixOS packaging:
 The fork also leaves configuration files that Home Manager links into the Nix
 store alone when writing the palette.
 
-On top of that, the bar is drawn as a row of iPhone Duo status marks: every
-module sits in an open ring with its gap at the bottom, and a white arc fills
-it only where there is an amount to show (volume, brightness, processor,
-media). This is the default chip shape; Settings can still switch back to
-impasto's icons. The dock along the bottom edge is left out; its pins still
-order the launcher. Two upstream issues are fixed on the way: lists exposed over
+The dock along the bottom edge is left out; its pins still order the launcher.
+Two upstream issues are fixed on the way: lists exposed over
 IPC, and tray icons probed in the Papirus panel set when it has no such icon.
 These changes are maintained in the fork rather than applied as build-time
 patches.
@@ -79,11 +75,6 @@ Anything left unset here stays as you change it in the shell's Settings;
 anything set is written over `~/.local/state/quickshell/settings.json` before
 the shell starts, so a Home Manager switch restarts it with the new values.
 
-The Duo chip defaults apply only when no value has been saved. Updating Island
-preserves an existing `chipShape = "icon"` or `chipFigure = "on"`; set
-`bar.chips.shape = "ring"` and `bar.chips.figure = "hover"` in Nix to apply the
-Duo appearance to an existing installation.
-
 ```nix
 programs.island = {
   enable = true;
@@ -92,8 +83,8 @@ programs.island = {
   bar = {
     style = "grouped";         # grouped | spread | island
     height = 32;
-    chips.shape = "ring";      # ring (iPhone Duo) | icon
-    chips.figure = "hover";    # off | hover | on
+    chips.shape = "icon";      # icon | ring (gauges)
+    chips.figure = "on";       # off | hover | on
     workspaces = { style = "dots"; count = 5; };
     left = [ "workspaces" ];
     right = [ "tray" "notifications" "network" "volume" { id = "stats"; figure = "on"; } ];
